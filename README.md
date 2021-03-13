@@ -1,4 +1,4 @@
-# safe_circle
+# Safe Circle
 
-An app that helps you to stay within your 5km travel limit. The app will alert you when you leave your 
+Safe Circle alerts you when you leave your 5km exercise limit so that you don't have to worry about remembering when to turn back while out exercising.
 
