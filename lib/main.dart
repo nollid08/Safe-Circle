@@ -1,0 +1,28 @@
+import 'package:flutter/material.dart';
+import 'package:five_km_from_home/constants.dart';
+import 'package:five_km_from_home/views/screens/map_screen.dart';
+import 'controllers/map_controller.dart';
+import 'package:provider/provider.dart';
+
+void main() {
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => MapController()),
+      ],
+      child: MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.light().copyWith(primaryColor: primaryColor),
+      home: MapScreen(),
+    );
+  }
+}
