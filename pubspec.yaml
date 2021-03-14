@@ -14,6 +14,7 @@ dependencies:
   background_location: ^0.4.0
   flutter_launcher_icons: ^0.8.1
   flutter_spinkit: ^4.1.2
+  shared_preferences: ^2.0.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -21,6 +22,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+  fonts:
+    - family: RobotoSlab     
+      fonts:
+        - asset: assets/fonts/roboto_slab.ttf
 flutter_icons:
   image_path: 'assets/launcher/icon.png'
   android: true
