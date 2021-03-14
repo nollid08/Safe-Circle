@@ -20,12 +20,15 @@ class LocationHelper {
         //await BackgroundLocation.setAndroidConfiguration(1000);
         await BackgroundLocation.startLocationService(distanceFilter: 0);
         BackgroundLocation.getLocationUpdates((locationData) {
-          _locationController.add(
-            LatLng(
-              locationData.latitude,
-              locationData.longitude,
-            ),
-          );
+          print('LocationData: ${locationData.accuracy}');
+          if (locationData.accuracy <= 50) {
+            _locationController.add(
+              LatLng(
+                locationData.latitude,
+                locationData.longitude,
+              ),
+            );
+          }
         });
         return;
       },
