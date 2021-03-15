@@ -15,10 +15,10 @@ class Circles {
   }
 
   void addCircle(LatLng location, bool isInside) {
-    _circles.removeWhere((c) => c.circleId.value == '<SAFE_CIRCLE>');
+    _circles.removeWhere((c) => c.circleId.value == '<five_km_from_home>');
     _circles.add(
       Circle(
-        circleId: CircleId('<SAFE_CIRCLE>'),
+        circleId: CircleId('<five_km_from_home>'),
         center: LatLng(location.latitude, location.longitude),
         radius: _radius,
         fillColor: isInside ? _greenCircleFill : _redCircleFill,

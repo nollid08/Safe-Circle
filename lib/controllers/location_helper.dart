@@ -17,7 +17,6 @@ class LocationHelper {
           message: "Safe Circle is using your location in the background",
           icon: "@mipmap/ic_launcher",
         );
-        //await BackgroundLocation.setAndroidConfiguration(1000);
         await BackgroundLocation.startLocationService(distanceFilter: 0);
         BackgroundLocation.getLocationUpdates((locationData) {
           print('LocationData: ${locationData.accuracy}');
