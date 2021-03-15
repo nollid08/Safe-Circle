@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +29,11 @@ class Map extends StatelessWidget {
             circles: context.watch<MapController>().circleSet,
             mapType: MapType.normal,
             initialCameraPosition: initialCameraPosition,
+            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
+              new Factory<OneSequenceGestureRecognizer>(
+                () => new EagerGestureRecognizer(),
+              ),
+            ].toSet(),
             onMapCreated: (GoogleMapController controller) async {
               bool cameraMoved = false;
               context
