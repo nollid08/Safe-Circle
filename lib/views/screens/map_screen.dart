@@ -1,3 +1,4 @@
+import 'package:five_km_from_home/views/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:five_km_from_home/controllers/map_controller.dart';
@@ -31,6 +32,17 @@ class _MapScreenState extends State<MapScreen> {
               title: Text('Safe Circle'),
               centerTitle: true,
               backgroundColor: primaryColor,
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SettingsScreen()),
+                    );
+                  },
+                )
+              ],
             ),
             body: Map(),
             floatingActionButton: FloatingActionButton.extended(

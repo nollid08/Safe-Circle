@@ -12,6 +12,7 @@ class MapController extends ChangeNotifier {
   NotificationHelper notificationHelper = NotificationHelper();
   bool _alarmTriggered = false;
   LocationHelper locationHelper = LocationHelper();
+  double safeCircleRadius;
   LatLng get currentLocation => _currentLocation;
   Set get circleSet => home.circles.circles;
   Set get markerSet => home.markers.markers;
