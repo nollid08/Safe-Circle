@@ -24,50 +24,45 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return RetainApp(
-      child: ChangeNotifierProvider<MapController>(
-        create: (_) => MapController(),
-        builder: (BuildContext context, child) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Safe Circle'),
-              centerTitle: true,
-              backgroundColor: primaryColor,
-              actions: [
-                IconButton(
-                  icon: Icon(Icons.settings),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SettingsScreen()),
-                    );
-                  },
-                )
-              ],
-            ),
-            body: Map(),
-            floatingActionButton: FloatingActionButton.extended(
-              icon: Icon(Icons.home_rounded),
-              label: Text('Set Home Location'),
-              backgroundColor: primaryColor,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Safe Circle'),
+          centerTitle: true,
+          backgroundColor: primaryColor,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.settings),
               onPressed: () {
-                if (context.read<MapController>().currentLocation != null) {
-                  print(
-                      'Distance from home: ${context.read<MapController>().distanceFromHome}');
-                  print(
-                      'Current location: ${context.read<MapController>().currentLocation}');
-                  bool isInside =
-                      context.read<MapController>().distanceFromHome < 5.000
-                          ? true
-                          : false;
-                  context.read<MapController>().setHomeLocation(
-                        context.read<MapController>().currentLocation,
-                        isInside,
-                      );
-                }
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsScreen()),
+                );
               },
-            ),
-          );
-        },
+            )
+          ],
+        ),
+        body: Map(),
+        floatingActionButton: FloatingActionButton.extended(
+          icon: Icon(Icons.home_rounded),
+          label: Text('Set Home Location'),
+          backgroundColor: primaryColor,
+          onPressed: () {
+            if (context.read<MapController>().currentLocation != null) {
+              print(
+                  'Distance from home: ${context.read<MapController>().distanceFromHome}');
+              print(
+                  'Current location: ${context.read<MapController>().currentLocation}');
+              bool isInside =
+                  context.read<MapController>().distanceFromHome < 5.000
+                      ? true
+                      : false;
+              context.read<MapController>().setHomeLocation(
+                    context.read<MapController>().currentLocation,
+                    isInside,
+                  );
+            }
+          },
+        ),
       ),
     );
   }
