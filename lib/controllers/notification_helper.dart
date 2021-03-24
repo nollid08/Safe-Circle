@@ -19,7 +19,7 @@ class NotificationHelper {
     var android = AndroidNotificationDetails(
       '00',
       'Safe Circle',
-      'Safe Circle alerts you when you leave your 5km radius',
+      'Safe Circle alerts you when you leave your travel radius',
       priority: Priority.High,
       importance: Importance.Max,
       playSound: true,
@@ -30,7 +30,7 @@ class NotificationHelper {
     await flutterLocalNotificationsPlugin.show(
       0,
       'Safe Circle',
-      'You are outside of your 5km limit!',
+      'You are outside of your travel limit!',
       platform,
     );
   }

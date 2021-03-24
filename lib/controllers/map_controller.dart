@@ -4,6 +4,7 @@ import 'package:five_km_from_home/models/home.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:math';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MapController extends ChangeNotifier {
   Home home = Home();
@@ -12,6 +13,9 @@ class MapController extends ChangeNotifier {
   NotificationHelper notificationHelper = NotificationHelper();
   bool _alarmTriggered = false;
   LocationHelper locationHelper = LocationHelper();
+  int _safeCircleRadius = 5;
+  int get safeCircleRadius => _safeCircleRadius;
+
   LatLng get currentLocation => _currentLocation;
   Set get circleSet => home.circles.circles;
   Set get markerSet => home.markers.markers;
@@ -21,10 +25,9 @@ class MapController extends ChangeNotifier {
       locationHelper.locationStream.listen(
         (LatLng newLocation) {
           if (home.homeLocation == null && newLocation != null) {
-            home.setHomeLocation(
-              newLocation,
-              distanceFromHome <= 5000 ? true : false,
-            );
+            bool isInsideLimit =
+                distanceFromHome <= safeCircleRadius * 1000 ? true : false;
+            home.setHomeLocation(newLocation, isInsideLimit, safeCircleRadius);
             notifyListeners();
           }
           _currentLocation = newLocation;
@@ -34,6 +37,8 @@ class MapController extends ChangeNotifier {
       );
       notifyListeners();
     });
+    reloadSharedPreferences();
+    notifyListeners();
   }
 
   void updateDistanceFromHome() {
@@ -51,26 +56,32 @@ class MapController extends ChangeNotifier {
     final double y = (lat2 - lat1);
     final double distance = sqrt(x * x + y * y) * radius;
     distanceFromHome = distance;
-    if (distanceFromHome > 5.000) {
-      home.circles.addCircle(home.homeLocation, false);
+    if (distanceFromHome > safeCircleRadius) {
+      home.circles.addCircle(home.homeLocation, false, safeCircleRadius);
       if (!_alarmTriggered) {
-        print('Triggering Alarm');
         notificationHelper.showNotification();
         _alarmTriggered = true;
-      } else {
-        print('Alarm already triggered');
       }
     } else {
-      print('Still inside 5km limit');
       notificationHelper.clearNotifications();
       _alarmTriggered = false;
-      home.circles.addCircle(home.homeLocation, true);
+      home.circles.addCircle(home.homeLocation, true, safeCircleRadius);
     }
     notifyListeners();
   }
 
-  void setHomeLocation(LatLng newLocation, bool isInside5km) {
-    home.setHomeLocation(newLocation, isInside5km);
+  void setHomeLocation(LatLng newLocation, bool isInsideLimit) {
+    home.setHomeLocation(newLocation, isInsideLimit, safeCircleRadius);
     notifyListeners();
+  }
+
+  void reloadSharedPreferences() {
+    SharedPreferences.getInstance().then((prefs) {
+      _safeCircleRadius = prefs.getInt('safeCircleRadius') ?? 5;
+      bool isInsideLimit =
+          distanceFromHome < safeCircleRadius * 1000 ? true : false;
+      home.circles
+          .addCircle(home.homeLocation, isInsideLimit, safeCircleRadius);
+    });
   }
 }

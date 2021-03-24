@@ -13,12 +13,13 @@ class Home {
   Home() {
     markers.initImage();
   }
-  void setHomeLocation(LatLng newLocation, bool isInside5km) {
+  void setHomeLocation(
+      LatLng newLocation, bool isInsideLimit, int safeCircleRadius) {
     _homeLocation = newLocation;
-    print("isInside5km: $isInside5km");
+    print("isInsideLimit: $isInsideLimit");
     print("HomeLocation: $homeLocation");
     print("newLocation: $newLocation");
-    circles.addCircle(_homeLocation, isInside5km);
+    circles.addCircle(_homeLocation, isInsideLimit, safeCircleRadius);
     markers.addmarker(_homeLocation);
   }
 }

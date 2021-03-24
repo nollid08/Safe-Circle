@@ -7,20 +7,17 @@ class Circles {
   final Color _redCircleFill = Color.fromARGB(50, 212, 19, 19);
   final Color _redCircleBorder = Color.fromARGB(100, 150, 38, 38);
   Set<Circle> _circles = {};
-  double _radius = 5000;
 
   Set<Circle> get circles => _circles;
-  set radius(double newRadius) {
-    _radius = newRadius;
-  }
 
-  void addCircle(LatLng location, bool isInside) {
+  void addCircle(LatLng location, bool isInside, int radius) {
+    double radiusInMeters = radius.toDouble() * 1000;
     _circles.removeWhere((c) => c.circleId.value == '<five_km_from_home>');
     _circles.add(
       Circle(
         circleId: CircleId('<five_km_from_home>'),
         center: LatLng(location.latitude, location.longitude),
-        radius: _radius,
+        radius: radiusInMeters,
         fillColor: isInside ? _greenCircleFill : _redCircleFill,
         strokeColor: isInside ? _greenCircleBorder : _redCircleBorder,
         strokeWidth: 1,
