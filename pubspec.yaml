@@ -1,5 +1,5 @@
 name: five_km_from_home
-description: An app that helps you to stay within your 5km excercise limit.
+description: An app that helps you to stay within your local excercise limit.
 publish_to: 'none'
 version: 1.0.10+12
 environment:
@@ -17,6 +17,7 @@ dependencies:
   shared_preferences: ^2.0.4
   settings_ui: ^0.6.0
   numberpicker: ^2.0.0
+  launch_review: ^3.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

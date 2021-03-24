@@ -30,6 +30,10 @@ class MyApp extends StatelessWidget {
                   return DisclosureScreen();
                 default:
                   if (!snapshot.hasError) {
+                    if (snapshot.data.getBool('welcomed') == null) {
+                      snapshot.data.setInt('safeCircleRadius', 5);
+                    }
+
                     return snapshot.data.getBool('welcomed') != null
                         ? new MapScreen()
                         : new DisclosureScreen();

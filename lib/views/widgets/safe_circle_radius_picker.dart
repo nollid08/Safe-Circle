@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:five_km_from_home/views/widgets/rounded_bottom_sheet.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SafeCircleRadiusPicker extends StatelessWidget {
   final int safeCircleRadius;
@@ -12,7 +13,8 @@ class SafeCircleRadiusPicker extends StatelessWidget {
   const SafeCircleRadiusPicker({this.safeCircleRadius});
   @override
   Widget build(BuildContext context) {
-    int _currentSafeCircleRadius = safeCircleRadius;
+    int _currentSafeCircleRadius =
+        context.read<MapController>().safeCircleRadius;
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setModalState) {
         return RoundedBottomSheet(
@@ -51,8 +53,10 @@ class SafeCircleRadiusPicker extends StatelessWidget {
               ),
               Button(
                 onPressed: () {
-                  context.read<MapController>().safeCircleRadius =
-                      _currentSafeCircleRadius;
+                  SharedPreferences.getInstance().then((prefs) {
+                    prefs.setInt('safeCircleRadius', _currentSafeCircleRadius);
+                    context.read<MapController>().reloadSharedPreferences();
+                  });
                   Navigator.pop(context);
                 },
                 icon: Icon(Icons.check),
