@@ -4,6 +4,7 @@ import 'package:five_km_from_home/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:five_km_from_home/views/widgets/safe_circle_radius_picker.dart';
+import 'package:launch_review/launch_review.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -46,6 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SettingsTile(
                 title: 'Rate Safe Circle on the Play Store!',
                 leading: Icon(Icons.star_outline),
+                onPressed: (BuildContext buildContext) => LaunchReview.launch(),
               )
             ],
           ),
