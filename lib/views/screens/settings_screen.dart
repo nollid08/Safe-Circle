@@ -43,6 +43,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   );
                 },
               ),
+              SettingsTile(
+                title: 'Rate Safe Circle on the Play Store!',
+                leading: Icon(Icons.star_outline),
+              )
             ],
           ),
         ],
