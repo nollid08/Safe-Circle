@@ -55,7 +55,7 @@ class SafeCircleRadiusPicker extends StatelessWidget {
                 onPressed: () {
                   SharedPreferences.getInstance().then((prefs) {
                     prefs.setInt('safeCircleRadius', _currentSafeCircleRadius);
-                    context.read<MapController>().reloadSharedPreferences();
+                    context.read<MapController>().reloadSafeCircleRadius();
                   });
                   Navigator.pop(context);
                 },

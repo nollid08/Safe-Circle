@@ -27,17 +27,24 @@ class MapController extends ChangeNotifier {
           if (home.homeLocation == null && newLocation != null) {
             bool isInsideLimit =
                 distanceFromHome <= safeCircleRadius * 1000 ? true : false;
-            home.setHomeLocation(newLocation, isInsideLimit, safeCircleRadius);
+            home
+                .setInitialHomeLocation(
+                    newLocation, isInsideLimit, safeCircleRadius)
+                .then((completed) {
+              reloadSafeCircleRadius();
+            });
             notifyListeners();
           }
           _currentLocation = newLocation;
-          updateDistanceFromHome();
+          if (home.homeLocation != null) {
+            updateDistanceFromHome();
+          }
+
           notifyListeners();
         },
       );
       notifyListeners();
     });
-    reloadSharedPreferences();
     notifyListeners();
   }
 
@@ -75,7 +82,7 @@ class MapController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void reloadSharedPreferences() {
+  void reloadSafeCircleRadius() {
     SharedPreferences.getInstance().then((prefs) {
       _safeCircleRadius = prefs.getInt('safeCircleRadius') ?? 5;
       bool isInsideLimit =
