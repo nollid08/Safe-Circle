@@ -4,18 +4,16 @@ import 'package:five_km_from_home/models/home.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:math';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MapController extends ChangeNotifier {
   Home home = Home();
+  LocationHelper locationHelper = LocationHelper();
+  NotificationHelper notificationHelper = NotificationHelper();
   double distanceFromHome = 0;
   LatLng _currentLocation;
-  NotificationHelper notificationHelper = NotificationHelper();
   bool _alarmTriggered = false;
-  LocationHelper locationHelper = LocationHelper();
-  int _safeCircleRadius = 5;
-  int get safeCircleRadius => _safeCircleRadius;
 
+  int get safeCircleRadius => home.circles.safeCircleRadius;
   LatLng get currentLocation => _currentLocation;
   Set get circleSet => home.circles.circles;
   Set get markerSet => home.markers.markers;
@@ -25,13 +23,12 @@ class MapController extends ChangeNotifier {
       locationHelper.locationStream.listen(
         (LatLng newLocation) {
           if (home.homeLocation == null && newLocation != null) {
-            bool isInsideLimit =
-                distanceFromHome <= safeCircleRadius * 1000 ? true : false;
             home
                 .setInitialHomeLocation(
-                    newLocation, isInsideLimit, safeCircleRadius)
+                    newLocation, distanceFromHome, safeCircleRadius)
                 .then((completed) {
-              reloadSafeCircleRadius();
+              home.circles
+                  .reloadSafeCircleRadius(home.homeLocation, distanceFromHome);
             });
             notifyListeners();
           }
@@ -39,13 +36,9 @@ class MapController extends ChangeNotifier {
           if (home.homeLocation != null) {
             updateDistanceFromHome();
           }
-
-          notifyListeners();
         },
       );
-      notifyListeners();
     });
-    notifyListeners();
   }
 
   void updateDistanceFromHome() {
@@ -64,7 +57,8 @@ class MapController extends ChangeNotifier {
     final double distance = sqrt(x * x + y * y) * radius;
     distanceFromHome = distance;
     if (distanceFromHome > safeCircleRadius) {
-      home.circles.addCircle(home.homeLocation, false, safeCircleRadius);
+      home.circles
+          .addCircle(home.homeLocation, distanceFromHome, safeCircleRadius);
       if (!_alarmTriggered) {
         notificationHelper.showNotification();
         _alarmTriggered = true;
@@ -72,23 +66,14 @@ class MapController extends ChangeNotifier {
     } else {
       notificationHelper.clearNotifications();
       _alarmTriggered = false;
-      home.circles.addCircle(home.homeLocation, true, safeCircleRadius);
+      home.circles
+          .addCircle(home.homeLocation, distanceFromHome, safeCircleRadius);
     }
     notifyListeners();
   }
 
-  void setHomeLocation(LatLng newLocation, bool isInsideLimit) {
-    home.setHomeLocation(newLocation, isInsideLimit, safeCircleRadius);
+  void setHomeLocation(LatLng newLocation) {
+    home.setHomeLocation(newLocation, distanceFromHome, safeCircleRadius);
     notifyListeners();
-  }
-
-  void reloadSafeCircleRadius() {
-    SharedPreferences.getInstance().then((prefs) {
-      _safeCircleRadius = prefs.getInt('safeCircleRadius') ?? 5;
-      bool isInsideLimit =
-          distanceFromHome < safeCircleRadius * 1000 ? true : false;
-      home.circles
-          .addCircle(home.homeLocation, isInsideLimit, safeCircleRadius);
-    });
   }
 }

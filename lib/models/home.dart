@@ -15,7 +15,7 @@ class Home {
     markers.initImage();
   }
   Future<void> setInitialHomeLocation(
-      LatLng newLocation, bool isInsideLimit, int safeCircleRadius) async {
+      LatLng newLocation, double distanceFromHome, int safeCircleRadius) async {
     final prefs = await SharedPreferences.getInstance();
     double latitude = prefs.getDouble('latitude');
     double longitude = prefs.getDouble('longitude');
@@ -31,21 +31,18 @@ class Home {
     _homeLocation = newLocation;
     print(
         'SetInitialHomeLocation: HomeLocation.Latitude: ${_homeLocation.latitude}');
-    circles.addCircle(_homeLocation, isInsideLimit, safeCircleRadius);
+    circles.addCircle(_homeLocation, distanceFromHome, safeCircleRadius);
     markers.addmarker(_homeLocation);
     return;
   }
 
   void setHomeLocation(
-      LatLng newLocation, bool isInsideLimit, int safeCircleRadius) {
+      LatLng newLocation, double distanceFromHome, int safeCircleRadius) {
     SharedPreferences.getInstance().then((prefs) {
       prefs.setDouble('latitude', newLocation.latitude);
       prefs.setDouble('longitude', newLocation.longitude);
       _homeLocation = newLocation;
-      print("isInsideLimit: $isInsideLimit");
-      print("HomeLocation: $homeLocation");
-      print("newLocation: $newLocation");
-      circles.addCircle(_homeLocation, isInsideLimit, safeCircleRadius);
+      circles.addCircle(_homeLocation, distanceFromHome, safeCircleRadius);
       markers.addmarker(_homeLocation);
     });
   }

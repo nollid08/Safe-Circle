@@ -48,17 +48,8 @@ class _MapScreenState extends State<MapScreen> {
           backgroundColor: primaryColor,
           onPressed: () {
             if (context.read<MapController>().currentLocation != null) {
-              print(
-                  'Distance from home: ${context.read<MapController>().distanceFromHome}');
-              print(
-                  'Current location: ${context.read<MapController>().currentLocation}');
-              bool isInside =
-                  context.read<MapController>().distanceFromHome < 5.000
-                      ? true
-                      : false;
               context.read<MapController>().setHomeLocation(
                     context.read<MapController>().currentLocation,
-                    isInside,
                   );
             }
           },
