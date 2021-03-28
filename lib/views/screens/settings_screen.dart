@@ -1,9 +1,9 @@
-import 'package:five_km_from_home/controllers/map_controller.dart';
+import 'package:safe_circle/controllers/map_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:five_km_from_home/constants.dart';
+import 'package:safe_circle/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:five_km_from_home/views/widgets/safe_circle_radius_picker.dart';
+import 'package:safe_circle/views/widgets/safe_circle_radius_picker.dart';
 import 'package:launch_review/launch_review.dart';
 
 class SettingsScreen extends StatefulWidget {

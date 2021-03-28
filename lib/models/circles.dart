@@ -17,10 +17,10 @@ class Circles {
     bool isInsideLimit =
         distanceFromHome < safeCircleRadius * 1000 ? true : false;
     double radiusInMeters = radius.toDouble() * 1000;
-    _circles.removeWhere((c) => c.circleId.value == '<five_km_from_home>');
+    _circles.removeWhere((c) => c.circleId.value == '<safe_circle>');
     _circles.add(
       Circle(
-        circleId: CircleId('<five_km_from_home>'),
+        circleId: CircleId('<safe_circle>'),
         center: LatLng(location.latitude, location.longitude),
         radius: radiusInMeters,
         fillColor: isInsideLimit ? _greenCircleFill : _redCircleFill,

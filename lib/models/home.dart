@@ -1,6 +1,6 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:five_km_from_home/models/circles.dart';
-import 'package:five_km_from_home/models/markers.dart';
+import 'package:safe_circle/models/circles.dart';
+import 'package:safe_circle/models/markers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Home {

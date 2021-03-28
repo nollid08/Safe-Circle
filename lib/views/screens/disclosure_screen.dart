@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:five_km_from_home/constants.dart';
-import 'package:five_km_from_home/views/screens/map_screen.dart';
+import 'package:safe_circle/constants.dart';
+import 'package:safe_circle/views/screens/map_screen.dart';
 
 class DisclosureScreen extends StatelessWidget {
   @override

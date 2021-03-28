@@ -1,4 +1,4 @@
-name: five_km_from_home
+name: safe_circle
 description: An app that helps you to stay within your local excercise limit.
 publish_to: 'none'
 version: 1.0.0+1

@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "five_km_from_home",
+      "name": "safe_circle",
       "request": "launch",
       "type": "dart"
     }

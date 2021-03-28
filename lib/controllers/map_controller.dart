@@ -1,6 +1,6 @@
-import 'package:five_km_from_home/controllers/location_helper.dart';
-import 'package:five_km_from_home/controllers/notification_helper.dart';
-import 'package:five_km_from_home/models/home.dart';
+import 'package:safe_circle/controllers/location_helper.dart';
+import 'package:safe_circle/controllers/notification_helper.dart';
+import 'package:safe_circle/models/home.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:math';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

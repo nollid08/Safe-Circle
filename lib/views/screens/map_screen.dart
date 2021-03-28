@@ -1,11 +1,11 @@
-import 'package:five_km_from_home/views/screens/settings_screen.dart';
+import 'package:safe_circle/views/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:five_km_from_home/controllers/map_controller.dart';
-import 'package:five_km_from_home/constants.dart';
-import 'package:five_km_from_home/views/widgets/map.dart';
+import 'package:safe_circle/controllers/map_controller.dart';
+import 'package:safe_circle/constants.dart';
+import 'package:safe_circle/views/widgets/map.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:five_km_from_home/views/widgets/retain_app.dart';
+import 'package:safe_circle/views/widgets/retain_app.dart';
 
 class MapScreen extends StatefulWidget {
   @override

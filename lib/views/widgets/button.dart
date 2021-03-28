@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:five_km_from_home/constants.dart';
+import 'package:safe_circle/constants.dart';
 
 class Button extends StatelessWidget {
   final Function onPressed;

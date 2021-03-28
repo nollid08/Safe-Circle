@@ -1,4 +1,4 @@
-package com.dillonlynch.five_km_from_home
+package com.dillonlynch.safe_circle
 
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity
