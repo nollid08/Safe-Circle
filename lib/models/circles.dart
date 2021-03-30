@@ -14,8 +14,8 @@ class Circles {
   int get safeCircleRadius => _safeCircleRadius;
 
   void addCircle(LatLng location, double distanceFromHome, int radius) {
-    bool isInsideLimit =
-        distanceFromHome < safeCircleRadius * 1000 ? true : false;
+    print('DFromHome: $distanceFromHome');
+    bool isInsideLimit = distanceFromHome < safeCircleRadius ? true : false;
     double radiusInMeters = radius.toDouble() * 1000;
     _circles.removeWhere((c) => c.circleId.value == '<safe_circle>');
     _circles.add(
