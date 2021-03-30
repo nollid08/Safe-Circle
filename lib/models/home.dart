@@ -19,7 +19,6 @@ class Home {
     final prefs = await SharedPreferences.getInstance();
     double latitude = prefs.getDouble('latitude');
     double longitude = prefs.getDouble('longitude');
-    print('SetInitialHomeLocation: Latitude: $latitude');
     if (latitude == null || longitude == null) {
       prefs.setDouble('latitude', newLocation.latitude);
       prefs.setDouble('longitude', newLocation.longitude);
@@ -29,8 +28,6 @@ class Home {
     newLocation = LatLng(latitude, longitude);
 
     _homeLocation = newLocation;
-    print(
-        'SetInitialHomeLocation: HomeLocation.Latitude: ${_homeLocation.latitude}');
     circles.addCircle(_homeLocation, distanceFromHome, safeCircleRadius);
     markers.addmarker(_homeLocation);
     return;
