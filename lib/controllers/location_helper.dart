@@ -19,7 +19,6 @@ class LocationHelper {
         );
         await BackgroundLocation.startLocationService(distanceFilter: 0);
         BackgroundLocation.getLocationUpdates((locationData) {
-          print('LocationData: ${locationData.accuracy}');
           if (locationData.accuracy <= 50) {
             _locationController.add(
               LatLng(
