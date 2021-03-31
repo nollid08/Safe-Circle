@@ -9,7 +9,7 @@ class MapController extends ChangeNotifier {
   Home home = Home();
   LocationHelper locationHelper = LocationHelper();
   NotificationHelper notificationHelper = NotificationHelper();
-  double distanceFromHome = 0;
+  double homeDistance = 0;
   LatLng _currentLocation;
   bool _alarmTriggered = false;
 
@@ -25,23 +25,23 @@ class MapController extends ChangeNotifier {
           if (home.homeLocation == null && newLocation != null) {
             home
                 .setInitialHomeLocation(
-                    newLocation, distanceFromHome, safeCircleRadius)
+                    newLocation, homeDistance, safeCircleRadius)
                 .then((completed) {
               home.circles
-                  .reloadSafeCircleRadius(home.homeLocation, distanceFromHome);
+                  .reloadSafeCircleRadius(home.homeLocation, homeDistance);
             });
             notifyListeners();
           }
           _currentLocation = newLocation;
           if (home.homeLocation != null) {
-            updateDistanceFromHome();
+            updatehomeDistance();
           }
         },
       );
     });
   }
 
-  void updateDistanceFromHome() {
+  void updatehomeDistance() {
     double deg2Rad(deg) {
       return deg * pi / 180;
     }
@@ -55,10 +55,9 @@ class MapController extends ChangeNotifier {
     final double x = (lon2 - lon1) * cos((lat1 + lat2) / 2);
     final double y = (lat2 - lat1);
     final double distance = sqrt(x * x + y * y) * radius;
-    distanceFromHome = distance;
-    if (distanceFromHome > safeCircleRadius) {
-      home.circles
-          .addCircle(home.homeLocation, distanceFromHome, safeCircleRadius);
+    homeDistance = distance;
+    if (homeDistance > safeCircleRadius) {
+      home.circles.addCircle(home.homeLocation, homeDistance, safeCircleRadius);
       if (!_alarmTriggered) {
         notificationHelper.showNotification();
         _alarmTriggered = true;
@@ -66,14 +65,13 @@ class MapController extends ChangeNotifier {
     } else {
       notificationHelper.clearNotifications();
       _alarmTriggered = false;
-      home.circles
-          .addCircle(home.homeLocation, distanceFromHome, safeCircleRadius);
+      home.circles.addCircle(home.homeLocation, homeDistance, safeCircleRadius);
     }
     notifyListeners();
   }
 
   void setHomeLocation(LatLng newLocation) {
-    home.setHomeLocation(newLocation, distanceFromHome, safeCircleRadius);
+    home.setHomeLocation(newLocation, homeDistance, safeCircleRadius);
     notifyListeners();
   }
 }

@@ -13,8 +13,8 @@ class Circles {
   Set<Circle> get circles => _circles;
   int get safeCircleRadius => _safeCircleRadius;
 
-  void addCircle(LatLng location, double distanceFromHome, int radius) {
-    bool isInsideLimit = distanceFromHome < safeCircleRadius ? true : false;
+  void addCircle(LatLng location, double homeDistance, int radius) {
+    bool isInsideLimit = homeDistance < safeCircleRadius ? true : false;
     double radiusInMeters = radius.toDouble() * 1000;
     _circles.removeWhere((c) => c.circleId.value == '<safe_circle>');
     _circles.add(
@@ -29,10 +29,10 @@ class Circles {
     );
   }
 
-  void reloadSafeCircleRadius(LatLng homeLocation, double distanceFromHome) {
+  void reloadSafeCircleRadius(LatLng homeLocation, double homeDistance) {
     SharedPreferences.getInstance().then((prefs) {
       _safeCircleRadius = prefs.getInt('safeCircleRadius') ?? 5;
-      addCircle(homeLocation, distanceFromHome, safeCircleRadius);
+      addCircle(homeLocation, homeDistance, safeCircleRadius);
     });
   }
 }

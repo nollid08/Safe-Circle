@@ -15,7 +15,7 @@ class Home {
     markers.initImage();
   }
   Future<void> setInitialHomeLocation(
-      LatLng newLocation, double distanceFromHome, int safeCircleRadius) async {
+      LatLng newLocation, double homeDistance, int safeCircleRadius) async {
     final prefs = await SharedPreferences.getInstance();
     double latitude = prefs.getDouble('latitude');
     double longitude = prefs.getDouble('longitude');
@@ -28,18 +28,18 @@ class Home {
     newLocation = LatLng(latitude, longitude);
 
     _homeLocation = newLocation;
-    circles.addCircle(_homeLocation, distanceFromHome, safeCircleRadius);
+    circles.addCircle(_homeLocation, homeDistance, safeCircleRadius);
     markers.addmarker(_homeLocation);
     return;
   }
 
   void setHomeLocation(
-      LatLng newLocation, double distanceFromHome, int safeCircleRadius) {
+      LatLng newLocation, double homeDistance, int safeCircleRadius) {
     SharedPreferences.getInstance().then((prefs) {
       prefs.setDouble('latitude', newLocation.latitude);
       prefs.setDouble('longitude', newLocation.longitude);
       _homeLocation = newLocation;
-      circles.addCircle(_homeLocation, distanceFromHome, safeCircleRadius);
+      circles.addCircle(_homeLocation, homeDistance, safeCircleRadius);
       markers.addmarker(_homeLocation);
     });
   }

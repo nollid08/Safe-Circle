@@ -61,7 +61,7 @@ class SafeCircleRadiusPicker extends StatelessWidget {
                         .circles
                         .reloadSafeCircleRadius(
                           context.read<MapController>().home.homeLocation,
-                          context.read<MapController>().distanceFromHome,
+                          context.read<MapController>().homeDistance,
                         );
                   });
                   Navigator.pop(context);
