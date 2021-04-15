@@ -17,7 +17,7 @@ class _MapScreenState extends State<MapScreen> {
   void initState() {
     super.initState();
     SharedPreferences.getInstance().then((prefs) {
-      prefs.setBool('welcomed', true);
+      prefs.setBool('permissionsGranted', true);
     });
   }
 
