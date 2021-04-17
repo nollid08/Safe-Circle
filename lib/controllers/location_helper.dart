@@ -8,6 +8,7 @@ class LocationHelper {
       StreamController<LatLng>.broadcast();
   Stream<LatLng> get locationStream =>
       _locationController.stream.asBroadcastStream();
+  final Completer<bool> locationPermissionCompleter = Completer();
   bool locationPermissionGranted = false;
 
   Future<void> startListener() async {
@@ -23,14 +24,14 @@ class LocationHelper {
         },
         onDenied: () {
           print('Not Granted');
-          throw ('No Permissions');
+          locationPermissionCompleter.complete(false);
         },
       );
     }
   }
 
   void startLocationService() async {
-    locationPermissionGranted = true;
+    locationPermissionCompleter.complete(true);
     await BackgroundLocation.setAndroidNotification(
       title: "Safe Circle",
       message: "Safe Circle is using your location in the background",

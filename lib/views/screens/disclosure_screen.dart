@@ -4,6 +4,7 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:safe_circle/constants.dart';
 import 'package:safe_circle/views/screens/map_screen.dart';
+import 'package:safe_circle/views/screens/permission_checker_screen.dart';
 
 class DisclosureScreen extends StatelessWidget {
   @override
@@ -21,7 +22,8 @@ class DisclosureScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => MapScreen()),
+              MaterialPageRoute(
+                  builder: (context) => PermissionCheckerScreen()),
             );
           },
           icon: Icon(Icons.check),
