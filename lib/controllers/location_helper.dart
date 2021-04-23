@@ -2,36 +2,39 @@ import 'dart:async';
 import 'package:background_location/background_location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:safe_circle/constants.dart';
 
 class LocationHelper {
   StreamController<LatLng> _locationController =
       StreamController<LatLng>.broadcast();
   Stream<LatLng> get locationStream =>
       _locationController.stream.asBroadcastStream();
-  final Completer<bool> locationPermissionCompleter = Completer();
+  Completer<LocationPermissionStatus> locationPermissionCompleter = Completer();
   bool locationPermissionGranted = false;
 
-  Future<void> startListener() async {
+  Future<void> checkAndRequestPermissions() async {
+    locationPermissionCompleter = Completer();
     var locationPermissionGranted = await Permission.locationAlways.isGranted;
     if (locationPermissionGranted) {
       print('permissions Granted');
-      startLocationService();
+      locationPermissionCompleter.complete(LocationPermissionStatus.allGranted);
     } else {
       requestLocation(
         onGranted: () async {
           print('permissions Granted');
-          startLocationService();
+          locationPermissionCompleter
+              .complete(LocationPermissionStatus.allGranted);
         },
-        onDenied: () {
+        onDenied: (permissionDenied) {
           print('Not Granted');
-          locationPermissionCompleter.complete(false);
+          locationPermissionCompleter.complete(permissionDenied);
         },
       );
     }
   }
 
-  void startLocationService() async {
-    locationPermissionCompleter.complete(true);
+  Future<void> startListener() async {
+    checkAndRequestPermissions();
     await BackgroundLocation.setAndroidNotification(
       title: "Safe Circle",
       message: "Safe Circle is using your location in the background",
@@ -62,10 +65,10 @@ class LocationHelper {
       if (backgroundLocationPermissionStatus.isGranted) {
         onGranted();
       } else {
-        onDenied();
+        onDenied(LocationPermissionStatus.onlyforegroundGranted);
       }
     } else {
-      onDenied();
+      onDenied(LocationPermissionStatus.allDenied);
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:safe_circle/constants.dart';
 import 'package:safe_circle/views/screens/disclosure_screen.dart';
 import 'package:safe_circle/views/screens/map_screen.dart';
+import 'package:safe_circle/views/screens/permission_checker_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'controllers/map_controller.dart';
 import 'package:provider/provider.dart';
@@ -30,12 +31,15 @@ class MyApp extends StatelessWidget {
                   return DisclosureScreen();
                 default:
                   if (!snapshot.hasError) {
-                    if (snapshot.data.getBool('permissionsGranted') == null) {
+                    if (snapshot.data.getBool('prominentDisclosureAccepted') ==
+                        null) {
                       snapshot.data.setInt('safeCircleRadius', 5);
                     }
 
-                    return snapshot.data.getBool('permissionsGranted') != null
-                        ? new MapScreen()
+                    return snapshot.data
+                                .getBool('prominentDisclosureAccepted') !=
+                            null
+                        ? new PermissionCheckerScreen()
                         : new DisclosureScreen();
                   } else {
                     throw (snapshot.error);

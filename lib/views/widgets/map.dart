@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:safe_circle/controllers/map_controller.dart';
@@ -16,51 +15,38 @@ class Map extends StatelessWidget {
       ),
       zoom: 6.551926040649414,
     );
-    return context
-            .watch<MapController>()
-            .locationHelper
-            .locationPermissionGranted
-        ? GoogleMap(
-            compassEnabled: true,
-            myLocationButtonEnabled: true,
-            myLocationEnabled: true,
-            zoomControlsEnabled: false,
-            markers: context.watch<MapController>().markerSet,
-            circles: context.watch<MapController>().circleSet,
-            mapType: MapType.normal,
-            initialCameraPosition: initialCameraPosition,
-            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
-              new Factory<OneSequenceGestureRecognizer>(
-                () => new EagerGestureRecognizer(),
-              ),
-            ].toSet(),
-            onMapCreated: (GoogleMapController controller) async {
-              bool cameraMoved = false;
-              context
-                  .read<MapController>()
-                  .locationHelper
-                  .locationStream
-                  .listen(
-                (LatLng newLocation) {
-                  if (cameraMoved == false) {
-                    controller.animateCamera(
-                      CameraUpdate.newCameraPosition(
-                        CameraPosition(
-                          target: newLocation,
-                          zoom: 12.551926040649414,
-                        ),
-                      ),
-                    );
-                    cameraMoved = true;
-                  }
-                },
+    return GoogleMap(
+      compassEnabled: true,
+      myLocationButtonEnabled: true,
+      myLocationEnabled: true,
+      zoomControlsEnabled: false,
+      markers: context.watch<MapController>().markerSet,
+      circles: context.watch<MapController>().circleSet,
+      mapType: MapType.normal,
+      initialCameraPosition: initialCameraPosition,
+      gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
+        new Factory<OneSequenceGestureRecognizer>(
+          () => new EagerGestureRecognizer(),
+        ),
+      ].toSet(),
+      onMapCreated: (GoogleMapController controller) async {
+        bool cameraMoved = false;
+        context.read<MapController>().locationHelper.locationStream.listen(
+          (LatLng newLocation) {
+            if (cameraMoved == false) {
+              controller.animateCamera(
+                CameraUpdate.newCameraPosition(
+                  CameraPosition(
+                    target: newLocation,
+                    zoom: 12.551926040649414,
+                  ),
+                ),
               );
-            },
-          )
-        : Center(
-            child: SpinKitRing(
-            color: Colors.black,
-            size: 50.0,
-          ));
+              cameraMoved = true;
+            }
+          },
+        );
+      },
+    );
   }
 }
