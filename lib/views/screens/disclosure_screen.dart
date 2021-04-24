@@ -1,46 +1,46 @@
 import 'dart:io';
-
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:safe_circle/constants.dart';
-import 'package:safe_circle/views/screens/map_screen.dart';
 import 'package:safe_circle/views/screens/permission_checker_screen.dart';
 
 class DisclosureScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(
-        backgroundColor: Colors.grey[200],
-        appBar: AppBar(
-          title: Text('Safe Circle'),
-          centerTitle: true,
-          backgroundColor: primaryColor,
-        ),
-        body: PermissionDisclosure(),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => PermissionCheckerScreen()),
-            );
-          },
-          icon: Icon(Icons.check),
-          label: Text('Accept And Continue'),
-          backgroundColor: primaryColor,
-        ),
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        title: Text('Safe Circle'),
+        centerTitle: true,
+        backgroundColor: primaryColor,
+      ),
+      body: PermissionDisclosure(),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => PermissionCheckerScreen()),
+          );
+        },
+        icon: Icon(Icons.check),
+        label: Text('Accept And Continue'),
+        backgroundColor: primaryColor,
       ),
     );
   }
 }
 
 class PermissionDisclosure extends StatelessWidget {
-  Future<int> getAndroidVersionNumber() async {
+  Future<double> getAndroidVersionNumber() async {
     if (Platform.isAndroid) {
       var androidInfo = await DeviceInfoPlugin().androidInfo;
-      String release = androidInfo.version.release;
-      int versionNumber = int.parse(release);
+      String releaseNumber = androidInfo.version.release;
+      print(releaseNumber);
+      if (releaseNumber.contains('.')) {
+        releaseNumber = releaseNumber.substring(0, releaseNumber.indexOf('.'));
+      }
+
+      double versionNumber = double.parse(releaseNumber);
       return versionNumber;
     } else {
       return 10;
@@ -49,9 +49,9 @@ class PermissionDisclosure extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<int>(
+    return FutureBuilder<double>(
       future: getAndroidVersionNumber(),
-      builder: (context, AsyncSnapshot<int> androidVersionSnapshot) {
+      builder: (context, AsyncSnapshot<double> androidVersionSnapshot) {
         if (androidVersionSnapshot.hasData) {
           if (androidVersionSnapshot.data >= 11) {
             return Android11UpPermissionDisclosure();

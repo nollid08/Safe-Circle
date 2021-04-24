@@ -12,22 +12,24 @@ class LocationHelper {
   Completer<LocationPermissionStatus> locationPermissionCompleter = Completer();
   bool locationPermissionGranted = false;
 
-  Future<void> checkAndRequestPermissions() async {
+  Future<LocationPermissionStatus> checkAndRequestPermissions() async {
     locationPermissionCompleter = Completer();
     var locationPermissionGranted = await Permission.locationAlways.isGranted;
     if (locationPermissionGranted) {
-      print('permissions Granted');
+      print('Permissions Granted');
       locationPermissionCompleter.complete(LocationPermissionStatus.allGranted);
     } else {
       requestLocation(
         onGranted: () async {
-          print('permissions Granted');
+          print('Permissions Already Granted');
           locationPermissionCompleter
               .complete(LocationPermissionStatus.allGranted);
+          return LocationPermissionStatus.allGranted;
         },
-        onDenied: (permissionDenied) {
-          print('Not Granted');
+        onDenied: (LocationPermissionStatus permissionDenied) {
+          print('Permissions Denied');
           locationPermissionCompleter.complete(permissionDenied);
+          return permissionDenied;
         },
       );
     }
@@ -60,8 +62,10 @@ class LocationHelper {
     PermissionStatus foregroundLocationPermissionStatus =
         await Permission.location.request();
     if (foregroundLocationPermissionStatus.isGranted) {
+      print('Foreground Granted, Requesting Background');
       PermissionStatus backgroundLocationPermissionStatus =
           await Permission.locationAlways.request();
+      print('Background Status: $backgroundLocationPermissionStatus');
       if (backgroundLocationPermissionStatus.isGranted) {
         onGranted();
       } else {

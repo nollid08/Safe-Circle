@@ -15,6 +15,7 @@ class Map extends StatelessWidget {
       ),
       zoom: 6.551926040649414,
     );
+    print(context.watch<MapController>().markerSet);
     return GoogleMap(
       compassEnabled: true,
       myLocationButtonEnabled: true,

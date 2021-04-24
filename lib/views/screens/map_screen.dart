@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:safe_circle/controllers/map_controller.dart';
 import 'package:safe_circle/constants.dart';
 import 'package:safe_circle/views/widgets/map.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:safe_circle/views/widgets/retain_app.dart';
 
 class MapScreen extends StatefulWidget {
@@ -13,14 +12,6 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  @override
-  void initState() {
-    super.initState();
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.setBool('prominentDisclosureAccepted', true);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return RetainApp(

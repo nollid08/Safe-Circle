@@ -19,7 +19,9 @@ class MapController extends ChangeNotifier {
   Set get markerSet => home.markers.markers;
 
   MapController() {
+    print('Starting Listener');
     locationHelper.startListener().then((value) {
+      print('Listener Started');
       locationHelper.locationStream.listen(
         (LatLng newLocation) {
           if (home.homeLocation == null && newLocation != null) {

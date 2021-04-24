@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_circle/constants.dart';
 import 'package:safe_circle/views/screens/disclosure_screen.dart';
-import 'package:safe_circle/views/screens/map_screen.dart';
 import 'package:safe_circle/views/screens/permission_checker_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'controllers/map_controller.dart';
