@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:safe_circle/constants.dart';
+import 'package:safe_circle/views/screens/loading_screen.dart';
 import 'package:safe_circle/views/screens/permission_checker_screen.dart';
 
 class DisclosureScreen extends StatelessWidget {
@@ -52,14 +53,22 @@ class PermissionDisclosure extends StatelessWidget {
     return FutureBuilder<double>(
       future: getAndroidVersionNumber(),
       builder: (context, AsyncSnapshot<double> androidVersionSnapshot) {
-        if (androidVersionSnapshot.hasData) {
-          if (androidVersionSnapshot.data >= 11) {
-            return Android11UpPermissionDisclosure();
-          } else {
-            return Android10DownPermissionDisclosure();
-          }
-        } else
-          return Android10DownPermissionDisclosure();
+        switch (androidVersionSnapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+            return LoadingScreen();
+          default:
+            if (androidVersionSnapshot.hasData) {
+              if (androidVersionSnapshot.data >= 11) {
+                return Android11UpPermissionDisclosure();
+              } else {
+                return Android10DownPermissionDisclosure();
+              }
+            } else {
+              return Android10DownPermissionDisclosure();
+            }
+            break;
+        }
       },
     );
   }

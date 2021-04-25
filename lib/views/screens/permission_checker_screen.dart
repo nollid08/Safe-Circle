@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:safe_circle/controllers/map_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:safe_circle/views/screens/loading_screen.dart';
 import 'package:safe_circle/views/screens/map_screen.dart';
 import 'package:safe_circle/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,12 +20,12 @@ class PermissionCheckerScreen extends StatelessWidget {
           print(' e $permissionGranted');
           switch (permissionGranted) {
             case LocationPermissionStatus.allGranted:
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => MapScreen(),
-              //   ),
-              // );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MapScreen(),
+                ),
+              );
               break;
             default:
               Navigator.pushReplacement(
@@ -50,53 +51,50 @@ class PermissionCheckerScreen extends StatelessWidget {
           .future,
       builder: (BuildContext context,
           AsyncSnapshot<LocationPermissionStatus> snapshot) {
-        if (snapshot.data != null) {
-          if (snapshot.data == LocationPermissionStatus.allGranted) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MapScreen(),
-                ),
-              );
-            });
-            return Container();
-          } else {
-            return Scaffold(
-              backgroundColor: Colors.grey[200],
-              appBar: AppBar(
-                title: Text('Safe Circle'),
-                centerTitle: true,
-                backgroundColor: primaryColor,
-              ),
-              body: snapshot.data ==
-                      LocationPermissionStatus.onlyforegroundGranted
-                  ? ForegroundOnlyGrantedPrompt()
-                  : NoPermissionsGrantedPrompt(),
-              floatingActionButton: FloatingActionButton.extended(
-                  backgroundColor: primaryColor,
-                  onPressed: () => requestPermissions(),
-                  icon: Icon(Icons.my_location),
-                  label: Text(
-                    'Request Permissions',
-                  )),
-            );
-          }
-        } else {
-          return Scaffold(
-            backgroundColor: Colors.grey[200],
-            appBar: AppBar(
-              title: Text('Safe Circle'),
-              centerTitle: true,
-              backgroundColor: primaryColor,
-            ),
-            body: Center(
-              child: SpinKitRing(
-                color: Colors.white,
-                size: 50.0,
-              ),
-            ),
-          );
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+            return LoadingScreen();
+          default:
+            if (snapshot.data != null) {
+              if (snapshot.data == LocationPermissionStatus.allGranted) {
+                WidgetsBinding.instance.addPostFrameCallback(
+                  (_) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MapScreen(),
+                      ),
+                    );
+                  },
+                );
+                return LoadingScreen();
+              } else {
+                return Scaffold(
+                  backgroundColor: Colors.grey[200],
+                  appBar: AppBar(
+                    title: Text('Safe Circle'),
+                    centerTitle: true,
+                    backgroundColor: primaryColor,
+                  ),
+                  body: snapshot.data ==
+                          LocationPermissionStatus.onlyforegroundGranted
+                      ? ForegroundOnlyGrantedPrompt()
+                      : NoPermissionsGrantedPrompt(),
+                  floatingActionButton: FloatingActionButton.extended(
+                    backgroundColor: primaryColor,
+                    onPressed: () => requestPermissions(),
+                    icon: Icon(Icons.my_location),
+                    label: Text(
+                      'Request Permissions',
+                    ),
+                  ),
+                );
+              }
+            } else {
+              return LoadingScreen();
+            }
+            break;
         }
       },
     );
