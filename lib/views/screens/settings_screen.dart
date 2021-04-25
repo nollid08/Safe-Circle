@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:safe_circle/views/widgets/safe_circle_radius_picker.dart';
 import 'package:launch_review/launch_review.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -48,6 +49,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: 'Rate Safe Circle on the Play Store!',
                 leading: Icon(Icons.star_outline),
                 onPressed: (BuildContext buildContext) => LaunchReview.launch(),
+              ),
+              SettingsTile(
+                title: 'View Privacy Policy',
+                leading: Icon(Icons.policy_outlined),
+                onPressed: (BuildContext buildContext) =>
+                    launch('https://safe-circle.tiiny.site/'),
               )
             ],
           ),
