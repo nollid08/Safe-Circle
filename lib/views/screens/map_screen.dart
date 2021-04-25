@@ -6,12 +6,7 @@ import 'package:safe_circle/constants.dart';
 import 'package:safe_circle/views/widgets/map.dart';
 import 'package:safe_circle/views/widgets/retain_app.dart';
 
-class MapScreen extends StatefulWidget {
-  @override
-  _MapScreenState createState() => _MapScreenState();
-}
-
-class _MapScreenState extends State<MapScreen> {
+class MapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RetainApp(
@@ -38,6 +33,8 @@ class _MapScreenState extends State<MapScreen> {
           label: Text('Set Home Location'),
           backgroundColor: primaryColor,
           onPressed: () {
+            print('btn pressed');
+            print(context.read<MapController>().currentLocation);
             if (context.read<MapController>().currentLocation != null) {
               context.read<MapController>().setHomeLocation(
                     context.read<MapController>().currentLocation,

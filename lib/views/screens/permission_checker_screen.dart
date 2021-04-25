@@ -19,13 +19,12 @@ class PermissionCheckerScreen extends StatelessWidget {
           print(' e $permissionGranted');
           switch (permissionGranted) {
             case LocationPermissionStatus.allGranted:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MapScreen(),
-                ),
-              );
-              // Navigator.pop(context);
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => MapScreen(),
+              //   ),
+              // );
               break;
             default:
               Navigator.pushReplacement(

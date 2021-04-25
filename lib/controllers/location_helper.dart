@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:background_location/background_location.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:safe_circle/constants.dart';
 
-class LocationHelper {
+class LocationHelper extends ChangeNotifier {
   StreamController<LatLng> _locationController =
       StreamController<LatLng>.broadcast();
   Stream<LatLng> get locationStream =>
@@ -18,8 +19,9 @@ class LocationHelper {
     if (locationPermissionGranted) {
       print('Permissions Granted');
       locationPermissionCompleter.complete(LocationPermissionStatus.allGranted);
+      return LocationPermissionStatus.allGranted;
     } else {
-      requestLocation(
+      await requestLocation(
         onGranted: () async {
           print('Permissions Already Granted');
           locationPermissionCompleter
@@ -32,27 +34,36 @@ class LocationHelper {
           return permissionDenied;
         },
       );
+      return locationPermissionCompleter.future;
     }
   }
 
   Future<void> startListener() async {
-    checkAndRequestPermissions();
-    await BackgroundLocation.setAndroidNotification(
-      title: "Safe Circle",
-      message: "Safe Circle is using your location in the background",
-      icon: "@mipmap/ic_launcher",
+    checkAndRequestPermissions().then(
+      (LocationPermissionStatus locationPermissions) async {
+        print(locationPermissions);
+        if (locationPermissions == LocationPermissionStatus.allGranted) {
+          await BackgroundLocation.setAndroidNotification(
+            title: "Safe Circle",
+            message: "Safe Circle is using your location in the background",
+            icon: "@mipmap/ic_launcher",
+          );
+          await BackgroundLocation.startLocationService(distanceFilter: 0);
+          BackgroundLocation.getLocationUpdates(
+            (locationData) {
+              if (locationData.accuracy <= 50) {
+                _locationController.add(
+                  LatLng(
+                    locationData.latitude,
+                    locationData.longitude,
+                  ),
+                );
+              }
+            },
+          );
+        }
+      },
     );
-    await BackgroundLocation.startLocationService(distanceFilter: 0);
-    BackgroundLocation.getLocationUpdates((locationData) {
-      if (locationData.accuracy <= 50) {
-        _locationController.add(
-          LatLng(
-            locationData.latitude,
-            locationData.longitude,
-          ),
-        );
-      }
-    });
   }
 
   Future<void> requestLocation({

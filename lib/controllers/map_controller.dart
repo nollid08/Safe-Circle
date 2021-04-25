@@ -73,6 +73,7 @@ class MapController extends ChangeNotifier {
   }
 
   void setHomeLocation(LatLng newLocation) {
+    print('setting Home Locatrion');
     home.setHomeLocation(newLocation, homeDistance, safeCircleRadius);
     notifyListeners();
   }
