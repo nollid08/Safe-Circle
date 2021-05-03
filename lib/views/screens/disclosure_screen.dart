@@ -90,7 +90,7 @@ class Android11UpPermissionDisclosure extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(16),
           child: Text(
-            "Safe Circle collects location data to alert you when you leave your local excercise limit even when the app is closed or not in use. To grant these permissions, follow the steps below",
+            "Safe Circle collects location data to alert you when you leave your local exercise limit even when the app is closed or not in use. To grant these permissions, follow the steps below",
             style: TextStyle(
               fontSize: 20,
               fontFamily: 'RobotoSlab',
@@ -180,7 +180,7 @@ class Android10DownPermissionDisclosure extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Text(
-          "Safe Circle collects location data to alert you when you leave your local excercise limit even when the app is closed or not in use.",
+          "Safe Circle collects location data to alert you when you leave your local exercise limit even when the app is closed or not in use.",
           style: TextStyle(
             fontSize: 21,
             fontFamily: 'RobotoSlab',

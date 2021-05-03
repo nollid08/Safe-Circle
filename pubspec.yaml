@@ -1,7 +1,7 @@
 name: safe_circle
-description: An app that helps you to stay within your local excercise limit.
+description: An app that helps you to stay within your local exercise limit.
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.2.0+3
 environment:
   sdk: ">=2.7.0 <3.0.0"
 dependencies:
